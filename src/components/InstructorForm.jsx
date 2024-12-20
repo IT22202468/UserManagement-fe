@@ -3,12 +3,15 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const InstructorForm = () => {
+  const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showRetypePassword, setShowRetypePassword] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState("");
 
   const handleDepartmentChange = (e) => {
-    setSelectedDepartment(e.target.value);
+    const { value } = e.target;
+    setSelectedDepartment(value);
+    handleInputChange(e);
   };
 
   // Supervisor data
@@ -24,9 +27,67 @@ const InstructorForm = () => {
     ],
   };
 
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    telephone: "",
+    address: "",
+    dob: "",
+    gender: "",
+    degree: "",
+    specialization: "",
+    experience: "",
+    department: "",
+    supervisor: "",
+    password: "",
+    retypePassword: "",
+  });
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) newErrors.name = "Name is required.";
+    if (!formData.email.trim()) newErrors.email = "Email is required.";
+    else if (!/\S+@\S+\.\S+/.test(formData.email))
+      newErrors.email = "Enter a valid email.";
+    if (!formData.telephone.trim())
+      newErrors.telephone = "Telephone number is required.";
+    else if (!/^\d{10}$/.test(formData.telephone))
+      newErrors.telephone = "Enter a valid 10-digit phone number.";
+    if (!formData.address.trim()) newErrors.address = "Address is required.";
+    if (!formData.dob) newErrors.dob = "Date of birth is required.";
+    if (!formData.gender) newErrors.gender = "Gender is required.";
+    if (!formData.degree.trim()) newErrors.degree = "Degree is required.";
+    if (!formData.specialization.trim())
+      newErrors.specialization = "Specialization is required.";
+    if (!formData.experience.trim())
+      newErrors.experience = "Experience is required.";
+    else if (isNaN(formData.experience) || formData.experience < 0)
+      newErrors.experience = "Enter a valid number for experience.";
+    if (!formData.department)
+      newErrors.department = "Department is required.";
+    if (formData.password !== formData.retypePassword)
+      newErrors.retypePassword = "Passwords do not match.";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleInputChange = (e) => {
+    const { id, name, value } = e.target;
+    setFormData({ ...formData, [id || name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      console.log("Form submitted:", formData);
+    }
+  };
+
   return (
     <>
-      <form className="p-4 space-y-4 Instructor-form">
+      <form className="p-4 space-y-4 Instructor-form" onSubmit={handleSubmit}>
         {/* Centered Form Title */}
         <h3 className="mb-6 text-2xl font-bold text-center">
           Add an Instructor
@@ -46,6 +107,8 @@ const InstructorForm = () => {
           id="name"
           type="text"
           placeholder="Name"
+          value={formData.name}
+          onChange={handleInputChange}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
         <label htmlFor="email" className="block text-sm font-medium text-left">
@@ -55,6 +118,8 @@ const InstructorForm = () => {
           id="email"
           type="email"
           placeholder="Email"
+          value={formData.email}
+          onChange={handleInputChange}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
         <label
@@ -67,6 +132,8 @@ const InstructorForm = () => {
           id="telephone"
           type="number"
           placeholder="Telephone"
+          value={formData.telephone}
+          onChange={handleInputChange}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
         <label
@@ -79,6 +146,8 @@ const InstructorForm = () => {
           id="address"
           type="text"
           placeholder="Address"
+          value={formData.address}
+          onChange={handleInputChange}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
         <label
@@ -95,6 +164,8 @@ const InstructorForm = () => {
         <input
           id="dob"
           type="date"
+          value={formData.dob}
+          onChange={handleInputChange}
           className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
 
@@ -112,6 +183,7 @@ const InstructorForm = () => {
                 type="radio"
                 name="gender"
                 value="male"
+                onChange={handleInputChange}
                 className="mr-2 input-field"
               />
               Male
@@ -121,6 +193,7 @@ const InstructorForm = () => {
                 type="radio"
                 name="gender"
                 value="female"
+                onChange={handleInputChange}
                 className="mr-2 input-field"
               />
               Female
@@ -130,11 +203,13 @@ const InstructorForm = () => {
                 type="radio"
                 name="gender"
                 value="other"
+                onChange={handleInputChange}
                 className="mr-2 input-field"
               />
               Other
             </label>
           </div>
+          {errors.gender && <p className="text-red-500">{errors.gender}</p>}
         </div>
 
         {/* Academic Qualification Section */}
@@ -151,6 +226,8 @@ const InstructorForm = () => {
           id="degree"
           type="text"
           placeholder="Highest Degree"
+          value={formData.degree}
+          onChange={handleInputChange}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
         <label
@@ -163,6 +240,8 @@ const InstructorForm = () => {
           id="specialization"
           type="text"
           placeholder="Specialization"
+          value={formData.specialization}
+          onChange={handleInputChange}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
         <label
@@ -175,6 +254,8 @@ const InstructorForm = () => {
           id="experience"
           type="number"
           placeholder="Experience"
+          value={formData.experience}
+          onChange={handleInputChange}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
 
@@ -187,6 +268,7 @@ const InstructorForm = () => {
         </label>
         <select
           id="Department"
+          name="department"
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
           value={selectedDepartment}
           onChange={handleDepartmentChange}
@@ -210,6 +292,8 @@ const InstructorForm = () => {
             </label>
             <select
               id="Supervisor"
+              value={formData.supervisor}
+              onChange={handleInputChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
             >
               <option value="">Select Supervisor</option>
@@ -236,6 +320,8 @@ const InstructorForm = () => {
             id="password"
             type={showPassword ? "text" : "password"}
             placeholder="Password"
+            value={formData.password}
+            onChange={handleInputChange}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
           />
           <button
@@ -259,6 +345,8 @@ const InstructorForm = () => {
             id="retype-password"
             type={showRetypePassword ? "text" : "password"}
             placeholder="Retype Password"
+            value={formData.retypePassword}
+            onChange={handleInputChange}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
           />
           <button

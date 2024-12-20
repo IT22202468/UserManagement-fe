@@ -75,17 +75,6 @@ const Login = () => {
               Forgot Password?
             </Link>
           </div>
-          <div className="mt-2 text-center">
-            <span className="text-sm text-gray-600">
-              Don&apos;t have an account?{" "}
-            </span>
-            <Link
-              to="/signup"
-              className="text-sm text-blue-500 hover:underline"
-            >
-              Sign up here
-            </Link>
-          </div>
         </div>
       </div>
     </>
