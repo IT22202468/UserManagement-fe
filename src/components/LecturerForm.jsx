@@ -1,4 +1,3 @@
-// import React from 'react'
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -15,28 +14,31 @@ const LecturerForm = () => {
     gender: "",
     degree: "",
     specialization: "",
-    experience: "",
+    experience: 0,
     department: "",
     password: "",
     retypePassword: "",
   });
 
   const handleChange = (e) => {
-    const {id, value} = e.target;
-    setFormData({ ...formData, [id]: value });
-  }
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const [errors, setErrors] = useState({});
 
   const validate = () => {
     const newErrors = {};
 
-    if(!formData.name.trim()) newErrors.name = "Name is required";
+    if (!formData.name.trim()) newErrors.name = "Name is required";
     if (!formData.email) {
       newErrors.email = "Email is required";
     } else if (!formData.email.match(/^\S+@\S+\.\S+$/)) {
       newErrors.email = "Invalid Email";
-    } 
+    }
     if (!formData.telephone) {
       newErrors.telephone = "Telephone is required";
     } else if (!formData.telephone.match(/^\d{10}$/)) {
@@ -46,7 +48,8 @@ const LecturerForm = () => {
     if (!formData.dob) newErrors.dob = "Date of Birth is required";
     if (!formData.gender) newErrors.gender = "Please select a gender";
     if (!formData.degree.trim()) newErrors.degree = "Degree is required";
-    if (!formData.specialization.trim()) newErrors.specialization = "Specialization is required";
+    if (!formData.specialization.trim())
+      newErrors.specialization = "Specialization is required";
     if (!formData.experience) {
       newErrors.experience = "Experience is required";
     } else if (formData.experience < 0) {
@@ -57,8 +60,11 @@ const LecturerForm = () => {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters long";
-    } else if (!formData.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/)) {
-      newErrors.password = "Password must contain at least one uppercase letter, one lowercase letter and one number";
+    } else if (
+      !formData.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/)
+    ) {
+      newErrors.password =
+        "Password must contain at least one uppercase letter, one lowercase letter and one number";
     }
     if (!formData.retypePassword) {
       newErrors.retypePassword = "Retype Password is required";
@@ -67,17 +73,17 @@ const LecturerForm = () => {
     }
 
     return newErrors;
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const ValidationErrors = validate();
-    if(Object.keys(ValidationErrors).length > 0){
+    if (Object.keys(ValidationErrors).length > 0) {
       setErrors(ValidationErrors);
     } else {
       console.log(formData);
     }
-  }
+  };
 
   return (
     <>
@@ -98,6 +104,7 @@ const LecturerForm = () => {
         <input
           id="name"
           type="text"
+          name="name"
           value={formData.name}
           onChange={handleChange}
           placeholder="Name"
@@ -111,6 +118,7 @@ const LecturerForm = () => {
         <input
           id="email"
           type="email"
+          name="email"
           value={formData.email}
           onChange={handleChange}
           placeholder="Email"
@@ -127,6 +135,7 @@ const LecturerForm = () => {
         <input
           id="telephone"
           type="number"
+          name="telephone"
           value={formData.telephone}
           onChange={handleChange}
           placeholder="Telephone"
@@ -173,9 +182,11 @@ const LecturerForm = () => {
           <div className="flex items-center space-x-4">
             <label className="gender-option">
               <input
+                id="gender"
                 type="radio"
                 name="gender"
                 value="male"
+                checked={formData.gender === "male"}
                 className="mr-2 input-field"
                 onChange={handleChange}
               />
@@ -183,9 +194,11 @@ const LecturerForm = () => {
             </label>
             <label className="gender-option">
               <input
+                id="gender"
                 type="radio"
                 name="gender"
                 value="female"
+                checked={formData.gender === "female"}
                 className="mr-2 input-field"
                 onChange={handleChange}
               />
@@ -193,15 +206,17 @@ const LecturerForm = () => {
             </label>
             <label className="gender-option">
               <input
+                id="gender"
                 type="radio"
                 name="gender"
                 value="other"
+                checked={formData.gender === "other"}
                 className="mr-2 input-field"
                 onChange={handleChange}
               />
               Other
             </label>
-            {errors.dob && <p className="text-red-500">{errors.dob}</p>}
+            {errors.gender && <p className="text-red-500">{errors.gender}</p>}
           </div>
         </div>
 
@@ -239,7 +254,9 @@ const LecturerForm = () => {
           placeholder="Specialization"
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
-        {errors.specialization && <p className="text-red-500">{errors.specialization}</p>}
+        {errors.specialization && (
+          <p className="text-red-500">{errors.specialization}</p>
+        )}
 
         <label
           htmlFor="experience"
@@ -255,7 +272,9 @@ const LecturerForm = () => {
           placeholder="Experience"
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
-        {errors.experience && <p className="text-red-500">{errors.experience}</p>}
+        {errors.experience && (
+          <p className="text-red-500">{errors.experience}</p>
+        )}
 
         {/* Department Dropdown */}
         <label
@@ -277,7 +296,9 @@ const LecturerForm = () => {
           <option value="Humanities">Faculty of Humanities and Sciences</option>
           <option value="GraduateStudies">Faculty of Graduate Studies</option>
         </select>
-        {errors.department && <p className="text-red-500">{errors.department}</p>}
+        {errors.department && (
+          <p className="text-red-500">{errors.department}</p>
+        )}
 
         {/* Password Field */}
         <label
@@ -314,7 +335,7 @@ const LecturerForm = () => {
         </label>
         <div className="relative">
           <input
-            id="retype-password"
+            id="retypePassword"
             type={showRetypePassword ? "text" : "password"}
             value={formData.retypePassword}
             onChange={handleChange}
@@ -329,7 +350,9 @@ const LecturerForm = () => {
             {showRetypePassword ? <FaEyeSlash /> : <FaEye />}
           </button>
         </div>
-        {errors.retypePassword && <p className="text-red-500">{errors.retypePassword}</p>}
+        {errors.retypePassword && (
+          <p className="text-red-500">{errors.retypePassword}</p>
+        )}
 
         {/* Submit Button */}
         <button

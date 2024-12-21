@@ -34,12 +34,28 @@ const AdminPanel = () => {
           } p-4 border border-gray-300 rounded-tl-md`}
           onClick={() => handleTabChange("ViewUsers")}
         >
-          View Users
+          Lecturers
+        </button>
+        <button
+          className={`tab-button ${
+            activeTab === "ViewUsers" ? "active" : ""
+          } p-4 border border-gray-300 rounded-tl-md`}
+          onClick={() => handleTabChange("ViewUsers")}
+        >
+          Instructors
+        </button>
+        <button
+          className={`tab-button ${
+            activeTab === "ViewUsers" ? "active" : ""
+          } p-4 border border-gray-300 rounded-tl-md`}
+          onClick={() => handleTabChange("ViewUsers")}
+        >
+          Students
         </button>
       </div>
 
       {/* Tab Content */}
-      <div className="p-4 bg-white tab-content">
+      <div className="w-full p-4 bg-white tab-content">
         {activeTab === "AddUser" && (
           <div className="add-user">
             <div className="mb-4 role-selection">
@@ -81,33 +97,7 @@ const AdminPanel = () => {
           </div>
         )}
 
-        {activeTab === "ViewUsers" && (
-          <div className="view-users">
-            <h3>List of Users</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* Replace this with dynamic data */}
-                <tr>
-                  <td>John Doe</td>
-                  <td>john.doe@example.com</td>
-                  <td>Lecturer</td>
-                </tr>
-                <tr>
-                  <td>Jane Smith</td>
-                  <td>jane.smith@example.com</td>
-                  <td>Instructor</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        )}
+        {activeTab === "ViewUsers" && <div className="view-users"></div>}
       </div>
     </div>
   );
