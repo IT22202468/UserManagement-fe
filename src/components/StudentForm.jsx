@@ -75,8 +75,8 @@ const StudentForm = () => {
     if(!formData.password) newErrors.password = "Password is required";
     if(!formData.retypePassword) newErrors.retypePassword = "Retype Password is required";
     if(formData.password !== formData.retypePassword) newErrors.retypePassword = "Passwords do not match";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    
+    return newErrors;
   };
 
   const combinedHandler = (e) => {
@@ -91,7 +91,6 @@ const StudentForm = () => {
       setErrors(ValidationErrors);
     } else {
       console.log("Form Submitted Successfully",formData);
-      setErrors({});
     }
   };
 

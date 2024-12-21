@@ -64,8 +64,7 @@ const InstructorForm = () => {
       newErrors.experience = "Experience is required.";
     else if (isNaN(formData.experience) || formData.experience < 0)
       newErrors.experience = "Enter a valid number for experience.";
-    if (!formData.department)
-      newErrors.department = "Department is required.";
+    if (!formData.department) newErrors.department = "Department is required.";
     if (formData.password !== formData.retypePassword)
       newErrors.retypePassword = "Passwords do not match.";
 
@@ -100,6 +99,8 @@ const InstructorForm = () => {
         >
           Personal Information
         </label>
+
+        {/* Name Field */}
         <label htmlFor="name" className="block text-sm font-medium text-left">
           Name
         </label>
@@ -111,6 +112,9 @@ const InstructorForm = () => {
           onChange={handleInputChange}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
+        {errors.name && <p className="text-red-500">{errors.name}</p>}
+
+        {/* Email Field */}
         <label htmlFor="email" className="block text-sm font-medium text-left">
           Email
         </label>
@@ -122,6 +126,9 @@ const InstructorForm = () => {
           onChange={handleInputChange}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
+        {errors.email && <p className="text-red-500">{errors.email}</p>}
+
+        {/* Telephone Field */}
         <label
           htmlFor="telephone"
           className="block text-sm font-medium text-left"
@@ -136,6 +143,9 @@ const InstructorForm = () => {
           onChange={handleInputChange}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
+        {errors.telephone && <p className="text-red-500">{errors.telephone}</p>}
+        
+        {/* Address Field */}
         <label
           htmlFor="address"
           className="block text-sm font-medium text-left"
@@ -150,17 +160,15 @@ const InstructorForm = () => {
           onChange={handleInputChange}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
+        {errors.address && <p className="text-red-500">{errors.address}</p>}
+
+        {/* Date of Birth Field */}
         <label
-          htmlFor="address"
+          htmlFor="dob"
           className="block text-sm font-medium text-left"
         >
           Date of Birth
         </label>
-        {/* <input
-      id="dob"
-      type="date"
-      className="justify-start px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
-    /> */}
         <input
           id="dob"
           type="date"
@@ -168,6 +176,7 @@ const InstructorForm = () => {
           onChange={handleInputChange}
           className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
+        {errors.dob && <p className="text-red-500">{errors.dob}</p>}
 
         {/* Gender Section */}
         <div className="space-y-2 gender-selection">
@@ -219,6 +228,8 @@ const InstructorForm = () => {
         >
           Academic Qualification
         </label>
+
+        {/* Degree Field */}
         <label htmlFor="degree" className="block text-sm font-medium text-left">
           Highest Degree
         </label>
@@ -230,6 +241,9 @@ const InstructorForm = () => {
           onChange={handleInputChange}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
+        {errors.degree && <p className="text-red-500">{errors.degree}</p>}
+
+        {/* Specialization Field */}
         <label
           htmlFor="specialization"
           className="block text-sm font-medium text-left"
@@ -244,6 +258,9 @@ const InstructorForm = () => {
           onChange={handleInputChange}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
+        {errors.specialization && <p className="text-red-500">{errors.specialization}</p>}
+
+        {/* Experience Field */}
         <label
           htmlFor="experience"
           className="block text-sm font-medium text-left"
@@ -258,6 +275,7 @@ const InstructorForm = () => {
           onChange={handleInputChange}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
+        {errors.experience && <p className="text-red-500">{errors.experience}</p>}
 
         {/* Department Dropdown */}
         <label
@@ -280,6 +298,7 @@ const InstructorForm = () => {
           <option value="Humanities">Faculty of Humanities and Sciences</option>
           <option value="GraduateStudies">Faculty of Graduate Studies</option>
         </select>
+        {errors.department && <p className="text-red-500">{errors.department}</p>}
 
         {/* Supervisor Dropdown */}
         {selectedDepartment && (
@@ -305,9 +324,10 @@ const InstructorForm = () => {
                 )
               )}
             </select>
+            {errors.supervisor && <p className="text-red-500">{errors.supervisor}</p>}
           </>
         )}
-
+        
         {/* Password Field */}
         <label
           htmlFor="password"
@@ -331,6 +351,7 @@ const InstructorForm = () => {
           >
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </button>
+          {errors.password && <p className="text-red-500">{errors.password}</p>}
         </div>
 
         {/* Retype Password Field */}
@@ -356,6 +377,7 @@ const InstructorForm = () => {
           >
             {showRetypePassword ? <FaEyeSlash /> : <FaEye />}
           </button>
+          {errors.retypePassword && <p className="text-red-500">{errors.retypePassword}</p>}
         </div>
 
         {/* Submit Button */}
