@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { addLecturer } from "../services/lecturerService";
 
 const LecturerForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -56,32 +57,22 @@ const LecturerForm = () => {
       newErrors.experience = "Experience cannot be negative";
     }
     if (!formData.department) newErrors.department = "Department is required";
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters long";
-    } else if (
-      !formData.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/)
-    ) {
-      newErrors.password =
-        "Password must contain at least one uppercase letter, one lowercase letter and one number";
-    }
-    if (!formData.retypePassword) {
-      newErrors.retypePassword = "Retype Password is required";
-    } else if (formData.password !== formData.retypePassword) {
-      newErrors.retypePassword = "Passwords do not match";
-    }
 
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const ValidationErrors = validate();
     if (Object.keys(ValidationErrors).length > 0) {
       setErrors(ValidationErrors);
     } else {
-      console.log(formData);
+      try {
+        const response = await addLecturer(formData);
+        console.log("Lecturer added successfully.", response);
+      } catch (error) {
+        console.error("Error adding lecturer:", error);
+      }
     }
   };
 
@@ -98,6 +89,8 @@ const LecturerForm = () => {
         >
           Personal Information
         </label>
+
+        {/* Name */}
         <label htmlFor="name" className="block text-sm font-medium text-left">
           Name
         </label>
@@ -112,6 +105,7 @@ const LecturerForm = () => {
         />
         {errors.name && <p className="text-red-500">{errors.name}</p>}
 
+        {/* Email */}
         <label htmlFor="email" className="block text-sm font-medium text-left">
           Email
         </label>
@@ -126,6 +120,7 @@ const LecturerForm = () => {
         />
         {errors.email && <p className="text-red-500">{errors.email}</p>}
 
+        {/* Telephone */}
         <label
           htmlFor="telephone"
           className="block text-sm font-medium text-left"
@@ -143,6 +138,7 @@ const LecturerForm = () => {
         />
         {errors.telephone && <p className="text-red-500">{errors.telephone}</p>}
 
+        {/* Address */}
         <label
           htmlFor="address"
           className="block text-sm font-medium text-left"
@@ -152,6 +148,7 @@ const LecturerForm = () => {
         <input
           id="address"
           type="text"
+          name="address"
           value={formData.address}
           onChange={handleChange}
           placeholder="Address"
@@ -159,12 +156,14 @@ const LecturerForm = () => {
         />
         {errors.address && <p className="text-red-500">{errors.address}</p>}
 
+        {/* Date of Birth */}
         <label htmlFor="dob" className="block text-sm font-medium text-left">
           Date of Birth
         </label>
         <input
           id="dob"
           type="date"
+          name="dob"
           value={formData.dob}
           onChange={handleChange}
           className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
@@ -227,12 +226,15 @@ const LecturerForm = () => {
         >
           Academic Qualification
         </label>
+
+        {/* Degree  */}
         <label htmlFor="degree" className="block text-sm font-medium text-left">
           Highest Degree
         </label>
         <input
           id="degree"
           type="text"
+          name="degree"
           value={formData.degree}
           onChange={handleChange}
           placeholder="Highest Degree"
@@ -240,6 +242,7 @@ const LecturerForm = () => {
         />
         {errors.degree && <p className="text-red-500">{errors.degree}</p>}
 
+        {/* Specialization */}
         <label
           htmlFor="specialization"
           className="block text-sm font-medium text-left"
@@ -249,6 +252,7 @@ const LecturerForm = () => {
         <input
           id="specialization"
           type="text"
+          name="specialization"
           value={formData.specialization}
           onChange={handleChange}
           placeholder="Specialization"
@@ -258,6 +262,7 @@ const LecturerForm = () => {
           <p className="text-red-500">{errors.specialization}</p>
         )}
 
+        {/* Experience */}
         <label
           htmlFor="experience"
           className="block text-sm font-medium text-left"
@@ -267,6 +272,7 @@ const LecturerForm = () => {
         <input
           id="experience"
           type="number"
+          name="experience"
           value={formData.experience}
           onChange={handleChange}
           placeholder="Experience"
@@ -285,6 +291,7 @@ const LecturerForm = () => {
         </label>
         <select
           id="Department"
+          name="department"
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
           value={formData.department}
           onChange={handleChange}
@@ -311,6 +318,7 @@ const LecturerForm = () => {
           <input
             id="password"
             type={showPassword ? "text" : "password"}
+            name="password"
             value={formData.password}
             onChange={handleChange}
             placeholder="Password"
@@ -337,6 +345,7 @@ const LecturerForm = () => {
           <input
             id="retypePassword"
             type={showRetypePassword ? "text" : "password"}
+            name="retypePassword"
             value={formData.retypePassword}
             onChange={handleChange}
             placeholder="Retype Password"
