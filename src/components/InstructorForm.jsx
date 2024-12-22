@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { addInstructor } from "../services/instructorService";
 
 const InstructorForm = () => {
   const [errors, setErrors] = useState({});
@@ -76,10 +77,17 @@ const InstructorForm = () => {
     setFormData({ ...formData, [id || name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       console.log("Form submitted:", formData);
+    } else {
+      try {
+        const response = await addInstructor(formData);
+        console.log("Instructor added successfully.", response);
+      } catch (error) {
+        console.error("Error adding lecturer:", error);
+      }
     }
   };
 
@@ -143,7 +151,7 @@ const InstructorForm = () => {
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
         {errors.telephone && <p className="text-red-500">{errors.telephone}</p>}
-        
+
         {/* Address Field */}
         <label
           htmlFor="address"
@@ -162,10 +170,7 @@ const InstructorForm = () => {
         {errors.address && <p className="text-red-500">{errors.address}</p>}
 
         {/* Date of Birth Field */}
-        <label
-          htmlFor="dob"
-          className="block text-sm font-medium text-left"
-        >
+        <label htmlFor="dob" className="block text-sm font-medium text-left">
           Date of Birth
         </label>
         <input
@@ -257,7 +262,9 @@ const InstructorForm = () => {
           onChange={handleInputChange}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
-        {errors.specialization && <p className="text-red-500">{errors.specialization}</p>}
+        {errors.specialization && (
+          <p className="text-red-500">{errors.specialization}</p>
+        )}
 
         {/* Experience Field */}
         <label
@@ -274,7 +281,9 @@ const InstructorForm = () => {
           onChange={handleInputChange}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
         />
-        {errors.experience && <p className="text-red-500">{errors.experience}</p>}
+        {errors.experience && (
+          <p className="text-red-500">{errors.experience}</p>
+        )}
 
         {/* Department Dropdown */}
         <label
@@ -297,7 +306,9 @@ const InstructorForm = () => {
           <option value="Humanities">Faculty of Humanities and Sciences</option>
           <option value="GraduateStudies">Faculty of Graduate Studies</option>
         </select>
-        {errors.department && <p className="text-red-500">{errors.department}</p>}
+        {errors.department && (
+          <p className="text-red-500">{errors.department}</p>
+        )}
 
         {/* Supervisor Dropdown */}
         {selectedDepartment && (
@@ -311,7 +322,9 @@ const InstructorForm = () => {
             <select
               id="Supervisor"
               value={formData.supervisor}
-              onChange={handleInputChange}
+              onChange={(e) =>
+                setFormData({ ...formData, supervisor: e.target.value })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
             >
               <option value="">Select Supervisor</option>
@@ -323,10 +336,12 @@ const InstructorForm = () => {
                 )
               )}
             </select>
-            {errors.supervisor && <p className="text-red-500">{errors.supervisor}</p>}
+            {errors.supervisor && (
+              <p className="text-red-500">{errors.supervisor}</p>
+            )}
           </>
         )}
-        
+
         {/* Password Field */}
         <label
           htmlFor="password"
@@ -362,7 +377,7 @@ const InstructorForm = () => {
         </label>
         <div className="relative">
           <input
-            id="retype-password"
+            id="retypePassword"
             type={showRetypePassword ? "text" : "password"}
             placeholder="Retype Password"
             value={formData.retypePassword}
@@ -376,7 +391,9 @@ const InstructorForm = () => {
           >
             {showRetypePassword ? <FaEyeSlash /> : <FaEye />}
           </button>
-          {errors.retypePassword && <p className="text-red-500">{errors.retypePassword}</p>}
+          {errors.retypePassword && (
+            <p className="text-red-500">{errors.retypePassword}</p>
+          )}
         </div>
 
         {/* Submit Button */}
